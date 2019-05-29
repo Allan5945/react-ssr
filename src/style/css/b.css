@@ -1,0 +1,5 @@
+.test {
+    color: red;
+    display: flex;
+    transition: all 1s linear;
+}
