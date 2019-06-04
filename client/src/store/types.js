@@ -1,0 +1,4 @@
+const CLICKCHILID = 'CLICKCHILID';
+export {
+    CLICKCHILID,
+}

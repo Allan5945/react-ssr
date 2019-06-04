@@ -1,144 +1,149 @@
-'use strict'
+'use strict';
+const fs = require('fs');
 const path = require('path');
-const webpack = require('webpack');
-const merge = require('webpack-merge');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const rootPath = require('app-root-path').path;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // webpack4 升级，用extract-text-webpack-plugin提取文件有问题
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const utils = require('./utils');
-const baseWebpackConfig = require('./webpack.base.conf');
-const config = require('../config');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HappyPack = require('happypack');
 
-// const env = require('../config/prod.env');
 
-const webpackConfig = merge(baseWebpackConfig, {
-  mode: 'production',
-  module: {
-    rules: utils.styleLoaders({
-      sourceMap: config.build.productionSourceMap,
-      extract: true,
-      usePostCSS: true
-    })
-  },
-  devtool: config.build.productionSourceMap ? config.build.devtool : false,
-  output: {
-    path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
-  },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        uglifyOptions: {
-          compress: true,
-          ecma: 6,
-          mangle: true
+module.exports = [
+    {
+
+        mode: "production",
+
+        devtool: 'none',
+
+        entry: [
+            "@babel/polyfill",
+            path.join(rootPath, '/client/src/main.js')
+        ],
+
+        output: {
+            path: path.join(rootPath, 'dist'),
+            filename: 'js/[chunkhash:8].[name].js',
+            chunkFilename: 'js/chunk.[chunkhash:8].js',
         },
-        sourceMap: true
-      })
-    ],
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2,
-          maxInitialRequests: 5, // The default limit is too small to showcase the effect
-          minSize: 0 // This is example is too small to create commons chunks
+
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    use: 'happypack/loader',
+                    exclude: /node_modules/,
+                },
+                {
+                    test: /\.(sa|sc|c)ss$/,
+                    exclude: /node_modules/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                camelCase: true,
+                                localIdentName: '[local]-[hash:base64:5]',
+                            },
+                        },
+                        {
+                            loader: "sass-loader"
+                        },
+                        {
+                            loader: 'postcss-loader'
+                        },
+                    ]
+                },
+                {
+                    test: /\.(less)$/,
+                    exclude: /node_modules/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                camelCase: true,
+                                localIdentName: '[local]-[hash:base64:5]',
+                            },
+                        },
+                        {
+                            loader: "less-loader"
+                        },
+                        {
+                            loader: 'postcss-loader'
+                        },
+                    ]
+                }
+            ]
+
         },
-        vendor: {
-          test: /node_modules/,
-          chunks: 'initial',
-          name: 'vendor',
-          priority: 10,
-          enforce: true
-        }
-      }
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: path.join(rootPath, '/client/src/index.html'),
+                filename: path.join(rootPath, '/dist/views/index.html'),
+                root:"<%- root %>",
+                chunksSortMode: 'none'
+            }),
+            new HappyPack({
+                loaders: ['babel-loader']
+            }),
+            new ProgressBarPlugin({summary: true}),
+            new MiniCssExtractPlugin({
+                filename: 'css/[contenthash:8].[name].css'
+            }),
+        ],
+        resolve: {
+            extensions: ['.js', '.vue', '.less', '.scss', '.css'],
+            alias: {
+                '$src': path.join(rootPath, '/client/src/')
+            }
+        },
+
     },
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendor: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       name: 'vendor',
-    //       chunks: 'all'
-    //     },
-    //     manifest: {
-    //       name: 'manifest',
-    //       minChunks: Infinity
-    //     },
-    //   }
-    // },
-  },
-  plugins: [
-    // new webpack.DefinePlugin({
-    //   'process.env': env
-    // }),
-    // new UglifyJsPlugin({
-    //   uglifyOptions: {
-    //     compress: {
-    //       warnings: false
-    //     }
-    //   },
-    //   sourceMap: config.build.productionSourceMap,
-    //   parallel: true
-    // }),
-    new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash:12].css'),
-      allChunks: true,
-    }),
-    new OptimizeCSSPlugin({
-      cssProcessorOptions: config.build.productionSourceMap
-        ? { safe: true, map: { inline: false } }
-        : { safe: true }
-    }),
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      templateParameters: {
-        production: true,
-      },
-      template: path.join(__dirname, '../client/index.html'),
-      inject: 'body',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-      },
-      chunksSortMode: 'dependency'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'server.ejs',
-      template: path.join(__dirname, '../client/server.template.ejs'),
-    }),
-    new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin
-  ]
-});
+    {
+        mode: "production",
+        devtool: 'none',
+        entry: [
+            "@babel/polyfill",
+            path.join(rootPath, 'server/server.prod.js')
+        ],
+        output: {
+            path: path.join(rootPath, 'dist/server'),
+            filename: '[name].js',
+            chunkFilename: 'chunk.[name].js'
+        },
 
-if (config.build.productionGzip) {
-  const CompressionWebpackPlugin = require('compression-webpack-plugin');
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    use: 'happypack/loader',
+                    exclude: /node_modules/,
+                }
+            ]
+        },
+        plugins: [
+            new HappyPack({
+                loaders: ['babel-loader']
+            }),
+            new ProgressBarPlugin({summary: true}),
+        ],
+        externals: fs
+            .readdirSync(path.resolve(__dirname, '../node_modules'))
+            .filter(filename => !filename.includes('.bin'))
+            .reduce((externals, filename) => {
+                externals[filename] = `commonjs ${filename}`;
+                return externals;
+            }, {}),
+        resolve: {
+            extensions: ['.js', '.vue', '.less', '.scss', '.css'],
+            alias: {
+                '$src': path.join(rootPath, '/client/src/')
+            }
+        },
 
-  webpackConfig.plugins.push(
-    new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: new RegExp(
-        '\\.(' +
-        config.build.productionGzipExtensions.join('|') +
-        ')$'
-      ),
-      threshold: 10240,
-      minRatio: 0.8
-    })
-  );
-}
-
-if (config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-}
-
-module.exports = webpackConfig;
+    },
+];

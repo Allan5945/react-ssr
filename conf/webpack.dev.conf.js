@@ -11,7 +11,7 @@ module.exports = {
 
     entry: [
         "@babel/polyfill",
-        path.join(rootPath, 'src/main.js')
+        path.join(rootPath, '/client/src/main.js')
     ],
 
     output: {
@@ -99,7 +99,7 @@ module.exports = {
 
     },
     plugins: [
-        new HtmlWebpackPlugin({template: path.join(rootPath, 'src/index.html')}),
+        new HtmlWebpackPlugin({template: path.join(rootPath, '/client/src/index.html')}),
         new HappyPack({
             loaders: ['babel-loader']
         })
@@ -108,7 +108,7 @@ module.exports = {
         extensions: ['.js', '.vue', '.less', '.scss', '.css'],
         alias: {
             'react-dom': '@hot-loader/react-dom',
-            '$src': path.join(rootPath, 'src/')
+            '$src': path.join(rootPath, '/client/src/')
         }
     },
     devtool: 'cheap-module-eval-source-map',
