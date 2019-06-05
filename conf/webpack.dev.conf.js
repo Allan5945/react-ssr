@@ -9,14 +9,21 @@ module.exports = {
 
     mode: "development",
 
-    entry: [
-        "@babel/polyfill",
-        path.join(rootPath, '/client/src/main.js')
-    ],
+    entry: {
+        login: [
+            '@babel/polyfill',
+            path.join(rootPath, 'client/src/page/login/main.js')
+        ],
+        index:  [
+            '@babel/polyfill',
+            path.join(rootPath, 'client/src/page/index/main.js')
+        ]
+    },
 
     output: {
         path: path.join(rootPath, 'dist'),
-        filename: 'main.js'
+        filename: '[name].[hash].js',
+        chunkFilename: '[name].chunk.js'
     },
 
     module: {
@@ -99,13 +106,22 @@ module.exports = {
 
     },
     plugins: [
-        new HtmlWebpackPlugin({template: path.join(rootPath, '/client/src/index.html')}),
+        new HtmlWebpackPlugin({
+            chunks: ['index'],
+            template: path.join(rootPath, '/client/src/index.html'),
+            filename: 'index.html',
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['login'],
+            template: path.join(rootPath, '/client/src/index.html'),
+            filename: 'login.html',
+        }),
         new HappyPack({
             loaders: ['babel-loader']
         })
     ],
     resolve: {
-        extensions: ['.js', '.vue', '.less', '.scss', '.css'],
+        extensions: ['.js', '.vue', '.less', '.scss', '.css',  '.jsx'],
         alias: {
             'react-dom': '@hot-loader/react-dom',
             '$src': path.join(rootPath, '/client/src/')

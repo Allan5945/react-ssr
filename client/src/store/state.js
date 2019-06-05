@@ -1,5 +1,7 @@
 
 const initialState = {
-    role:null,    // 用户信息
+    role:{
+        name: 'allan'
+    },    // 用户信息
 };
 export default initialState;

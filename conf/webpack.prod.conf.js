@@ -15,10 +15,16 @@ module.exports = [
 
         devtool: 'none',
 
-        entry: [
-            "@babel/polyfill",
-            path.join(rootPath, '/client/src/main.js')
-        ],
+        entry: {
+            login: [
+                '@babel/polyfill',
+                path.join(rootPath, 'client/src/page/login/main.js')
+            ],
+            index:  [
+                '@babel/polyfill',
+                path.join(rootPath, 'client/src/page/index/main.js')
+            ]
+        },
 
         output: {
             path: path.join(rootPath, 'dist'),
@@ -82,9 +88,17 @@ module.exports = [
         },
         plugins: [
             new HtmlWebpackPlugin({
+                chunks: ['index'],
+                root:"<%- root %>",
                 template: path.join(rootPath, '/client/src/index.html'),
                 filename: path.join(rootPath, '/dist/views/index.html'),
+                chunksSortMode: 'none'
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['login'],
                 root:"<%- root %>",
+                template: path.join(rootPath, '/client/src/index.html'),
+                filename: path.join(rootPath, '/dist/views/login.html'),
                 chunksSortMode: 'none'
             }),
             new HappyPack({
@@ -96,7 +110,7 @@ module.exports = [
             }),
         ],
         resolve: {
-            extensions: ['.js', '.vue', '.less', '.scss', '.css'],
+            extensions: ['.js', '.vue', '.less', '.scss', '.css',  '.jsx'],
             alias: {
                 '$src': path.join(rootPath, '/client/src/')
             }
@@ -104,7 +118,7 @@ module.exports = [
 
     },
     {
-        mode: "production",
+        mode: "development",
         devtool: 'none',
         entry: [
             "@babel/polyfill",
@@ -139,7 +153,7 @@ module.exports = [
                 return externals;
             }, {}),
         resolve: {
-            extensions: ['.js', '.vue', '.less', '.scss', '.css'],
+            extensions: ['.js', '.vue', '.less', '.scss', '.css',  '.jsx'],
             alias: {
                 '$src': path.join(rootPath, '/client/src/')
             }

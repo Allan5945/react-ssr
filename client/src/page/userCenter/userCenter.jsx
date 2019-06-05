@@ -6,7 +6,7 @@ import { hot } from 'react-hot-loader/root';
 // const Test = Loadable(() => import(/* webpackChunkName: "NotFound" */ './Test.js'));
 
 
-class Login extends React.Component {
+class UserCenter extends React.Component {
 
     constructor(props) {
         super(props)
@@ -14,11 +14,11 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                login
+                UserCenter
             </div>
         );
     }
 }
 
 
-export default hot(Login);
+export default hot(UserCenter);
