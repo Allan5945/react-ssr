@@ -86,6 +86,7 @@ module.exports = [
                 }
             ]
         },
+
         plugins: [
             new HtmlWebpackPlugin({
                 chunks: ['index'],
@@ -137,6 +138,48 @@ module.exports = [
                     test: /\.(js|jsx)$/,
                     use: 'happypack/loader',
                     exclude: /node_modules/,
+                },
+                {
+                    test: /\.(sa|sc|c)ss$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                camelCase: true,
+                                localIdentName: '[local]-[hash:base64:5]',
+                            },
+                        },
+                        {
+                            loader: "sass-loader"
+                        },
+                        {
+                            loader: 'postcss-loader'
+                        },
+                    ]
+                },
+                {
+                    test: /\.(less)$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                camelCase: true,
+                                localIdentName: '[local]-[hash:base64:5]',
+                            },
+                        },
+                        {
+                            loader: "less-loader"
+                        },
+                        {
+                            loader: 'postcss-loader'
+                        },
+                    ]
                 }
             ]
         },

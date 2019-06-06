@@ -1,5 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
+import b from './../../../style/css/b.css';
 import {store} from './../../../store';
 
 class Page1 extends React.Component {
@@ -16,7 +17,14 @@ class Page1 extends React.Component {
             ]
         }
     }
-
+    test() {
+        this.setState({
+            listData: [{
+                name: "jack",
+                age: 9
+            }]
+        })
+    }
     render() {
         return (
             <div>
@@ -25,8 +33,8 @@ class Page1 extends React.Component {
                         return <div key={key}>name:{val.name} age: {val.age}</div>
                     })
                 }
-                <div>{this.props.name}</div>
-                <div>page1</div>
+                <div onClick={this.test.bind(this)}>{this.props.name}</div>
+                <div className={b['test']}>page1</div>
             </div>
         );
     }
