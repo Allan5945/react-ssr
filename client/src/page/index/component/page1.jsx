@@ -1,11 +1,11 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
+import {store} from './../../../store';
 
 class Page1 extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props)
     }
 
     render() {

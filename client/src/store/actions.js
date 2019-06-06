@@ -3,7 +3,7 @@ import * as types from "./types";
 
 function mapDispatchToProps(dispatch){
     return{
-        onButtonClickChilid:(data)=>dispatch(Object.assign({type:types.CLICKCHILID,data:data}))
+
     }
 }
 

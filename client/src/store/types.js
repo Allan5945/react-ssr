@@ -1,4 +1,4 @@
-const CLICKCHILID = 'CLICKCHILID';
+const INITDATA = 'INITDATA';
 export {
-    CLICKCHILID,
+    INITDATA,
 }

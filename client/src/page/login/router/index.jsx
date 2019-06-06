@@ -7,6 +7,10 @@ import routes from './routes';
 
 
 class RoutesIndex extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="app-container">
