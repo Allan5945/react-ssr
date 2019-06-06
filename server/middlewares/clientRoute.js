@@ -11,7 +11,6 @@ async function clientRoute(ctx, next) {
 
     for (let item of routes) {
         if (ctx.url.includes(item.path)) {
-            console.log(ctx.url, item.path);
             await ctx.render(item.template, {
                 root: renderToStaticMarkup(
                     <Provider store={store}>

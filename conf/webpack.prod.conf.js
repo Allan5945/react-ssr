@@ -10,6 +10,7 @@ const HappyPack = require('happypack');
 
 module.exports = [
     {
+        stats: 'errors-only',
 
         mode: "production",
 
@@ -118,6 +119,7 @@ module.exports = [
 
     },
     {
+        stats: 'errors-only',
         mode: "development",
         devtool: 'none',
         entry: [
