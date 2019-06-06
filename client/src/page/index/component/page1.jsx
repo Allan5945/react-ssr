@@ -6,13 +6,27 @@ class Page1 extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            name:'test',
+            listData: [
+                {
+                    name: "allan",
+                    age: 8
+                }
+            ]
+        }
     }
 
     render() {
         return (
             <div>
+                {
+                    this.state.listData.map((val, key) => {
+                        return <div key={key}>name:{val.name} age: {val.age}</div>
+                    })
+                }
                 <div>{this.props.name}</div>
-                <div>page</div>
+                <div>page1</div>
             </div>
         );
     }

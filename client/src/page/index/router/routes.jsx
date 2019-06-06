@@ -14,5 +14,10 @@ export default [
         path: '/index/page2',
         exact: true,
         component: Page2
-    }
+    },
+    {
+        path: '/index',
+        exact: true,
+        component: Page1
+    },
 ];

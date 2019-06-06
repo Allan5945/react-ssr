@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot --config conf/webpack.dev.conf.js",
-    "build": "rimraf ./dist && webpack --config conf/webpack.prod.conf.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --config conf/webpack.dev.conf.js",
+    "build": "cross-env NODE_ENV=production rimraf ./dist && webpack --config conf/webpack.prod.conf.js",
     "server": "node dist/server/main.js",
     "buildServer": "npm run build && npm run server"
   },
