@@ -135,7 +135,7 @@ module.exports = {
         stats: 'errors-only',
         overlay: true,
         open:true,
-        openPage: 'index.html',
+        openPage: 'index.html#/index/',
         noInfo: true,
         historyApiFallback: false,
     }
