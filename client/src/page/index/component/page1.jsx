@@ -1,14 +1,17 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import { hot } from 'react-hot-loader/root';
 import b from './../../../style/css/b.css';
 import l from './../../../style/less/s.less';
 import s from './../../../style/scss/s.scss';
 import {store} from './../../../store';
 
+@connect
 class Page1 extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             name:'test',
             listData: [
