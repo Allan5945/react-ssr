@@ -6,12 +6,14 @@ import l from './../../../style/less/s.less';
 import s from './../../../style/scss/s.scss';
 import {store} from './../../../store';
 
-@connect
+@connect(
+    state=>({num:state}),
+)
 class Page1 extends React.Component {
 
     constructor(props) {
         super(props);
-
+        console.log(props)
         this.state = {
             name:'test',
             listData: [
@@ -30,6 +32,7 @@ class Page1 extends React.Component {
             }]
         })
     }
+
     render() {
         return (
             <div>
@@ -39,7 +42,6 @@ class Page1 extends React.Component {
                     })
                 }
                 <div onClick={this.test.bind(this)}>{this.props.name}</div>
-                <div className={b['test']}>page1</div>
                 <div className={l['test2']}>page1</div>
                 <div className={s['test1']}>page1</div>
             </div>

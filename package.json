@@ -7,7 +7,9 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --config conf/webpack.dev.conf.js",
     "build": "cross-env NODE_ENV=production rimraf ./dist && webpack --config conf/webpack.prod.conf.js",
     "server": "node dist/server/main.js",
-    "buildServer": "npm run build && npm run server"
+    "buildServer": "npm run build && npm run server",
+    "startpm": "pm2 start ./dist/server/main.js --name xwb007",
+    "delpm": "pm2 delete all"
   },
   "repository": {
     "type": "git",
