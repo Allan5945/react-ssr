@@ -8,9 +8,10 @@ import routes from './router';
 
 
 async function clientRoute(ctx, next) {
-
+    let isPage = false;
     for (let item of routes) {
-        if (ctx.url.includes(item.path)) {
+        if (ctx.url.startsWith(item.path)) {
+            isPage = true;
             await ctx.render(item.template, {
                 root: renderToStaticMarkup(
                     <Provider store={store}>
@@ -23,7 +24,9 @@ async function clientRoute(ctx, next) {
             break;
         }
     }
-    await next();
+    if (!isPage) {
+        await next();
+    }
 }
 
 export default clientRoute;
